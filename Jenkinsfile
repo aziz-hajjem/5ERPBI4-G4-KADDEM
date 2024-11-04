@@ -66,7 +66,7 @@ pipeline {
                    mvn sonar:sonar \
                        -Dsonar.host.url=http://10.0.2.15:9000 \
                        -Dsonar.login=admin \
-                       -Dsonar.password=Capo&É"', \
+                       -Dsonar.password=Aziz20223666?, \
                        -Dsonar.exclusions="src/main/java/tn/esprit/spring/kaddem/entities/Equipe.java,
                        src/main/java/tn/esprit/spring/kaddem/entities/DetailEquipe.java,
                        src/main/java/tn/esprit/spring/kaddem/entities/Etudiant.java,
