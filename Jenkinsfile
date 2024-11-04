@@ -88,18 +88,18 @@ pipeline {
        }
 
 
-        stage('Deploy to Nexus') {
-            steps {
-                echo 'Deploying to Nexus Repository'
-                sh 'mvn clean deploy -DskipTests'
-            }
-        }
+        // stage('Deploy to Nexus') {
+        //     steps {
+        //         echo 'Deploying to Nexus Repository'
+        //         sh 'mvn clean deploy -DskipTests'
+        //     }
+        // }
 
         stage('Build Docker Image') {
             steps {
                 script {
                     echo 'Building Docker Image'
-                    def dockerImage = docker.build("ihebkh336/kaddem:0.0.1")
+                    def dockerImage = docker.build("azizhajjem1920/kaddem:0.0.1")
                 }
             }
         }
@@ -108,8 +108,8 @@ pipeline {
             steps {
                 script {
                     echo 'Logging into DockerHub and Pushing Image'
-                    sh 'docker login -u ihebkh336 -p a1b2c3IHEB'
-                    sh 'docker push ihebkh336/kaddem:0.0.1'
+                    sh 'docker login -u azizhajjem1920 -p Capo1234?'
+                    sh 'docker push azizhajjem1920/kaddem:0.0.1'
                 }
             }
         }
