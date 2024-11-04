@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout Git repository') {
             steps {
                 echo 'Pulling Git repository'
-                git branch: 'khmiriiheb-5BI4-G1', url: 'https://github.com/ihebkh/5BI4-G1-Kaddem.git'
+                git branch: 'HajjemMedAziz-5ERPBI4-G4', url: 'https://github.com/aziz-hajjem/5ERPBI4-G4-KADDEM.git'
             }
         }
 
@@ -64,9 +64,9 @@ pipeline {
            steps {
                sh '''
                    mvn sonar:sonar \
-                       -Dsonar.host.url=http://192.168.33.10:9000 \
+                       -Dsonar.host.url=http://10.0.2.15:9000 \
                        -Dsonar.login=admin \
-                       -Dsonar.password=201JmT1896@@ \
+                       -Dsonar.password=Aziz20223666? \
                        -Dsonar.exclusions="src/main/java/tn/esprit/spring/kaddem/entities/Equipe.java,
                        src/main/java/tn/esprit/spring/kaddem/entities/DetailEquipe.java,
                        src/main/java/tn/esprit/spring/kaddem/entities/Etudiant.java,
@@ -99,7 +99,7 @@ pipeline {
             steps {
                 script {
                     echo 'Building Docker Image'
-                    def dockerImage = docker.build("ihebkh336/kaddem:0.0.1")
+                    def dockerImage = docker.build("azizhajjem1920/kaddem:0.0.1")
                 }
             }
         }
@@ -108,8 +108,8 @@ pipeline {
             steps {
                 script {
                     echo 'Logging into DockerHub and Pushing Image'
-                    sh 'docker login -u ihebkh336 -p a1b2c3IHEB'
-                    sh 'docker push ihebkh336/kaddem:0.0.1'
+                    sh 'docker login -u azizhajjem1920 -p Capo1234?'
+                    sh 'docker push azizhajjem1920/kaddem:0.0.1'
                 }
             }
         }
