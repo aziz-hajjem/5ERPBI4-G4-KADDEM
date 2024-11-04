@@ -88,12 +88,12 @@ pipeline {
        }
 
 
-        // stage('Deploy to Nexus') {
-        //     steps {
-        //         echo 'Deploying to Nexus Repository'
-        //         sh 'mvn clean deploy -DskipTests'
-        //     }
-        // }
+        stage('Deploy to Nexus') {
+            steps {
+                echo 'Deploying to Nexus Repository'
+                sh 'mvn clean deploy -DskipTests'
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
