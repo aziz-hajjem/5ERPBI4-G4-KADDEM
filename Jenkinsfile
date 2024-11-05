@@ -125,10 +125,7 @@ pipeline {
 
 
     }
-<<<<<<< HEAD
-    //hello aziz
-=======
->>>>>>> 938a4c4b3109d6d88e04be220e654e61eca1bd8e
+    //hello azouz
     // post {
     //     success {
     //         mail to: 'khmiriiheb3@gmail.com',
@@ -148,8 +145,4 @@ pipeline {
     //         echo 'Pipeline completed.'
     //     }
     // }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 938a4c4b3109d6d88e04be220e654e61eca1bd8e
