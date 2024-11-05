@@ -70,7 +70,7 @@ ContratRepository contratRepository;
     List<Contrat> contratsAarchiver = new ArrayList<>(); // Initialize as an empty list
     for (Contrat contrat : contrats) {
         Date dateSysteme = new Date();
-        if (!contrat.getArchive()) {
+        if (Boolean.False.equals(contrat.getArchive())) {
             long differenceInTime = dateSysteme.getTime() - contrat.getDateFinContrat().getTime();
             long differenceInDays = (differenceInTime / (1000 * 60 * 60 * 24)) % 365;
             if (differenceInDays == 15) {
@@ -87,7 +87,7 @@ ContratRepository contratRepository;
 }
 
 	public float getChiffreAffaireEntreDeuxDates(Date startDate, Date endDate){
-		float differenceInTime = endDate.getTime() - startDate.getTime();
+		float differenceInTime = (float) (endDate.getTime() - startDate.getTime());
 		float differenceInDays = (differenceInTime / (1000 * 60 * 60 * 24)) % 365;
 		float differenceInMonths =differenceInDays/30;
         List<Contrat> contrats=contratRepository.findAll();
