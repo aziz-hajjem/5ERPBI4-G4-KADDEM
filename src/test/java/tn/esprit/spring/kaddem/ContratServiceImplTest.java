@@ -1,4 +1,4 @@
-package tn.esprit.spring.kaddem;
+package tn.esprit.spring.kaddem.services.ContratServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
