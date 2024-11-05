@@ -1,26 +1,23 @@
 package tn.esprit.spring.kaddem.services;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import tn.esprit.spring.kaddem.entities.Contrat;
 import tn.esprit.spring.kaddem.entities.Etudiant;
 import tn.esprit.spring.kaddem.entities.Specialite;
 import tn.esprit.spring.kaddem.repositories.ContratRepository;
 import tn.esprit.spring.kaddem.repositories.EtudiantRepository;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
+@ExtendWith(MockitoExtension.class)
 class ContratServiceImplTest {
 
     @InjectMocks
@@ -31,11 +28,6 @@ class ContratServiceImplTest {
 
     @Mock
     private EtudiantRepository etudiantRepository;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     void testRetrieveAllContrats() {
@@ -117,25 +109,6 @@ class ContratServiceImplTest {
     }
 
     @Test
-    void testGetChiffreAffaireEntreDeuxDates() {
-        Date startDate = new Date();
-        Date endDate = new Date(startDate.getTime() + 60L * 24 * 60 * 60 * 1000); // 60 days later
-        Contrat contrat1 = new Contrat();
-        contrat1.setSpecialite(Specialite.IA);
-        
-        Contrat contrat2 = new Contrat();
-        contrat2.setSpecialite(Specialite.CLOUD);
-
-        List<Contrat> contrats = List.of(contrat1, contrat2);
-        when(contratRepository.findAll()).thenReturn(contrats);
-
-        float result = contratService.getChiffreAffaireEntreDeuxDates(startDate, endDate);
-
-        assertEquals(42000.0f, result); // (60 days -> 2 months * 300 + 2 months * 400)
-        verify(contratRepository, times(1)).findAll();
-    }
-
-    @Test
     void testNbContratsValides() {
         Date startDate = new Date();
         Date endDate = new Date(startDate.getTime() + 10 * 24 * 60 * 60 * 1000); // 10 days later
@@ -165,5 +138,26 @@ class ContratServiceImplTest {
         contratService.retrieveAndUpdateStatusContrat();
 
         verify(contratRepository, times(1)).save(contrat);
+    }
+
+    @Test
+    void testGetChiffreAffaireEntreDeuxDates() {
+        Date startDate = new Date();
+        Date endDate = new Date(startDate.getTime() + 60L * 24 * 60 * 60 * 1000); // 60 days later (approx. 2 months)
+
+        Contrat contrat1 = new Contrat();
+        contrat1.setSpecialite(Specialite.IA);
+
+        Contrat contrat2 = new Contrat();
+        contrat2.setSpecialite(Specialite.CLOUD);
+
+        List<Contrat> contrats = List.of(contrat1, contrat2);
+        when(contratRepository.findAll()).thenReturn(contrats);
+
+        float result = contratService.getChiffreAffaireEntreDeuxDates(startDate, endDate);
+
+        float expected = (2 * 300) + (2 * 400); // 2 months of IA + CLOUD
+        assertEquals(expected, result);
+        verify(contratRepository, times(1)).findAll();
     }
 }
