@@ -1,8 +1,6 @@
-package tn.esprit.spring.kaddem.services.ContratServiceImpl;
-
+package tn.esprit.spring.kaddem.services;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -13,7 +11,6 @@ import tn.esprit.spring.kaddem.entities.Etudiant;
 import tn.esprit.spring.kaddem.entities.Specialite;
 import tn.esprit.spring.kaddem.repositories.ContratRepository;
 import tn.esprit.spring.kaddem.repositories.EtudiantRepository;
-
 import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
