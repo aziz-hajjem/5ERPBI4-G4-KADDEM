@@ -70,7 +70,7 @@ ContratRepository contratRepository;
     List<Contrat> contratsAarchiver = new ArrayList<>(); // Initialize as an empty list
     for (Contrat contrat : contrats) {
         Date dateSysteme = new Date();
-        if (Boolean.False.equals(contrat.getArchive())) {
+        if (Boolean.FALSE.equals(contrat.getArchive())) {
             long differenceInTime = dateSysteme.getTime() - contrat.getDateFinContrat().getTime();
             long differenceInDays = (differenceInTime / (1000 * 60 * 60 * 24)) % 365;
             if (differenceInDays == 15) {
