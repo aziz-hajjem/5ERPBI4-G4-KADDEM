@@ -50,7 +50,7 @@ ContratRepository contratRepository;
 		Integer nbContratssActifs=0;
 		if (contrats.isEmpty()) {
 			for (Contrat contrat : contrats) {
-				if (((contrat.getArchive())!=null)&& (contrat.getArchive()))  {
+				if (((contrat.getArchive())!=null)&&(Boolean.TRUE.equals(contrat.getArchive())))  {
 					nbContratssActifs++;
 				}
 			}
