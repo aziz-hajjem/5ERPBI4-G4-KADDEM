@@ -105,31 +105,32 @@ class ContratServiceImplTest {
     }
 
     @Test
-    void testAffectContratToEtudiantWithMaxActiveContracts() {
-        Integer idContrat = 1;
-        String nomE = "John";
-        String prenomE = "Doe";
+void testAffectContratToEtudiantWithMaxActiveContracts() {
+    Integer idContrat = 1;
+    String nomE = "John";
+    String prenomE = "Doe";
 
-        Etudiant etudiant = new Etudiant();
-        Set<Contrat> contrats = new HashSet<>();
-        for (int i = 0; i < 4; i++) {
-            Contrat activeContrat = new Contrat();
-            activeContrat.setArchive(false);
-            contrats.add(activeContrat);
-        }
-        etudiant.setContrats(contrats);
-
-        Contrat contrat = new Contrat();
-        contrat.setArchive(false);
-
-        when(etudiantRepository.findByNomEAndPrenomE(nomE, prenomE)).thenReturn(etudiant);
-        when(contratRepository.findByIdContrat(idContrat)).thenReturn(contrat);
-
-        Contrat result = contratService.affectContratToEtudiant(idContrat, nomE, prenomE);
-
-        assertNull(result.getEtudiant());
-        verify(contratRepository, times(0)).save(contrat);
+    Etudiant etudiant = new Etudiant();
+    Set<Contrat> contrats = new HashSet<>();
+    for (int i = 0; i < 4; i++) {
+        Contrat activeContrat = new Contrat();
+        activeContrat.setArchive(false);
+        contrats.add(activeContrat);
     }
+    etudiant.setContrats(contrats);
+
+    Contrat contrat = new Contrat();
+    contrat.setArchive(false);
+
+    when(etudiantRepository.findByNomEAndPrenomE(nomE, prenomE)).thenReturn(etudiant);
+    when(contratRepository.findByIdContrat(idContrat)).thenReturn(contrat);
+
+    Contrat result = contratService.affectContratToEtudiant(idContrat, nomE, prenomE);
+
+    assertNull(result.getEtudiant()); // Expecting no assignment if there are already 4 active contracts
+    verify(contratRepository, times(0)).save(contrat);
+}
+
 
     @Test
     void testNbContratsValides() {

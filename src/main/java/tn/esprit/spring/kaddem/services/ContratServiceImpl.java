@@ -43,23 +43,25 @@ ContratRepository contratRepository;
 
 
 
-	public Contrat affectContratToEtudiant (Integer idContrat, String nomE, String prenomE){
-		Etudiant e=etudiantRepository.findByNomEAndPrenomE(nomE, prenomE);
-		Contrat ce=contratRepository.findByIdContrat(idContrat);
-		Set<Contrat> contrats= e.getContrats();
-		Integer nbContratssActifs=0;
-		if (contrats.isEmpty()) {
-			for (Contrat contrat : contrats) {
-				if (((contrat.getArchive())!=null)&&(Boolean.TRUE.equals(contrat.getArchive())))  {
-					nbContratssActifs++;
-				}
-			}
-		}
-		if (nbContratssActifs<=4){
-		ce.setEtudiant(e);
-		contratRepository.save(ce);}
-		return ce;
-	}
+	public Contrat affectContratToEtudiant(Integer idContrat, String nomE, String prenomE) {
+    Etudiant e = etudiantRepository.findByNomEAndPrenomE(nomE, prenomE);
+    Contrat ce = contratRepository.findByIdContrat(idContrat);
+    Set<Contrat> contrats = e.getContrats();
+    int nbContratssActifs = 0;
+
+    for (Contrat contrat : contrats) {
+        if (Boolean.TRUE.equals(contrat.getArchive()) == false) {
+            nbContratssActifs++;
+        }
+    }
+
+    if (nbContratssActifs < 4) {
+        ce.setEtudiant(e);
+        contratRepository.save(ce);
+    }
+    return ce;
+}
+
 	public 	Integer nbContratsValides(Date startDate, Date endDate){
 		return contratRepository.getnbContratsValides(startDate, endDate);
 	}
