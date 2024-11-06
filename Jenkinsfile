@@ -64,7 +64,7 @@ pipeline {
            steps {
                sh '''
                    mvn sonar:sonar \
-                       -Dsonar.host.url=http://192.168.192.131:9000 \
+                       -Dsonar.host.url=http://192.168.33.10:9000 \
                        -Dsonar.login=admin \
                        -Dsonar.password=Walid1@sdaaa \
                        -Dsonar.exclusions="src/main/java/tn/esprit/spring/kaddem/entities/Equipe.java,
