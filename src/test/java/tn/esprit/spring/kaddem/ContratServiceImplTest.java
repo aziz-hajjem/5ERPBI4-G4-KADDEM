@@ -28,8 +28,7 @@ class ContratServiceImplTest {
 
     @Test
     void testRetrieveAllContrats() {
-        List<Contrat> contrats = new ArrayList<>();
-        contrats.add(new Contrat());
+        List<Contrat> contrats = Collections.singletonList(new Contrat());
         when(contratRepository.findAll()).thenReturn(contrats);
 
         List<Contrat> result = contratService.retrieveAllContrats();
@@ -84,7 +83,7 @@ class ContratServiceImplTest {
     }
 
     @Test
-    void testAffectContratToEtudiant() {
+    void testAffectContratToEtudiantWithLessThan4ActiveContracts() {
         Integer idContrat = 1;
         String nomE = "John";
         String prenomE = "Doe";
@@ -106,6 +105,33 @@ class ContratServiceImplTest {
     }
 
     @Test
+    void testAffectContratToEtudiantWithMaxActiveContracts() {
+        Integer idContrat = 1;
+        String nomE = "John";
+        String prenomE = "Doe";
+
+        Etudiant etudiant = new Etudiant();
+        Set<Contrat> contrats = new HashSet<>();
+        for (int i = 0; i < 4; i++) {
+            Contrat activeContrat = new Contrat();
+            activeContrat.setArchive(false);
+            contrats.add(activeContrat);
+        }
+        etudiant.setContrats(contrats);
+
+        Contrat contrat = new Contrat();
+        contrat.setArchive(false);
+
+        when(etudiantRepository.findByNomEAndPrenomE(nomE, prenomE)).thenReturn(etudiant);
+        when(contratRepository.findByIdContrat(idContrat)).thenReturn(contrat);
+
+        Contrat result = contratService.affectContratToEtudiant(idContrat, nomE, prenomE);
+
+        assertNull(result.getEtudiant());
+        verify(contratRepository, times(0)).save(contrat);
+    }
+
+    @Test
     void testNbContratsValides() {
         Date startDate = new Date();
         Date endDate = new Date(startDate.getTime() + 10 * 24 * 60 * 60 * 1000); // 10 days later
@@ -121,20 +147,23 @@ class ContratServiceImplTest {
 
     @Test
     void testRetrieveAndUpdateStatusContrat() {
-        Date endDate = new Date();
-        Contrat contrat = new Contrat();
-        contrat.setArchive(false);
-        contrat.setDateFinContrat(endDate);
+        Contrat contract15DaysOld = new Contrat();
+        contract15DaysOld.setArchive(false);
+        contract15DaysOld.setDateFinContrat(new Date(System.currentTimeMillis() - 15L * 24 * 60 * 60 * 1000));
 
-        List<Contrat> contrats = new ArrayList<>();
-        contrats.add(contrat);
+        Contrat contractExpired = new Contrat();
+        contractExpired.setArchive(false);
+        contractExpired.setDateFinContrat(new Date());
+
+        List<Contrat> contrats = Arrays.asList(contract15DaysOld, contractExpired);
 
         when(contratRepository.findAll()).thenReturn(contrats);
-        when(contratRepository.save(any(Contrat.class))).thenReturn(contrat);
+        when(contratRepository.save(any(Contrat.class))).thenReturn(contractExpired);
 
         contratService.retrieveAndUpdateStatusContrat();
 
-        verify(contratRepository, times(1)).save(contrat);
+        verify(contratRepository, times(1)).save(contractExpired);
+        assertTrue(contractExpired.getArchive());
     }
 
     @Test
@@ -154,7 +183,7 @@ class ContratServiceImplTest {
         float result = contratService.getChiffreAffaireEntreDeuxDates(startDate, endDate);
 
         float expected = (2 * 300) + (2 * 400); // 2 months of IA + CLOUD
-        assertEquals(expected, result);
+        assertEquals(expected, result, 0.01);
         verify(contratRepository, times(1)).findAll();
     }
 }
