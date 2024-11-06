@@ -70,6 +70,8 @@ pipeline {
                        -Dsonar.exclusions="src/main/java/tn/esprit/spring/kaddem/entities/Equipe.java,
                        src/main/java/tn/esprit/spring/kaddem/entities/DetailEquipe.java,
                        src/main/java/tn/esprit/spring/kaddem/entities/Etudiant.java,
+                       src/main/java/tn/esprit/spring/kaddem/entities/Universite.java,
+                       src/main/java/tn/esprit/spring/kaddem/controllers/UniversiteRestController.java,
                        src/main/java/tn/esprit/spring/kaddem/entities/Contrat.java,
                        src/main/java/tn/esprit/spring/kaddem/entities/Departement.java,
                        src/main/java/tn/esprit/spring/kaddem/controllers/ContratRestController.java,
