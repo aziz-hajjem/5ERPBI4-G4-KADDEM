@@ -127,5 +127,25 @@ public void testUpdateEquipeWithDifferentLevels() {
     assertEquals(Niveau.SENIOR, result.getNiveau());
     verify(equipeRepository, times(1)).save(updatedEquipe);
 }
+@Test
+public void testRetrieveAllEquipesEmpty() {
+    when(equipeRepository.findAll()).thenReturn(Collections.emptyList());
+
+    List<Equipe> result = equipeService.retrieveAllEquipes();
+    assertTrue(result.isEmpty());
+    verify(equipeRepository, times(1)).findAll();
+}
+@Test
+public void testAddEquipeNull() {
+    when(equipeRepository.save(null)).thenThrow(new IllegalArgumentException("Equipe cannot be null"));
+
+    assertThrows(IllegalArgumentException.class, () -> equipeService.addEquipe(null));
+    verify(equipeRepository, times(1)).save(null);
+}
+@Test
+public void testUpdateEquipeNull() {
+    assertThrows(IllegalArgumentException.class, () -> equipeService.updateEquipe(null));
+}
+
 
 }
