@@ -44,6 +44,10 @@ public class EquipeServiceImpl implements IEquipeService{
 	public Equipe updateEquipe(Equipe e){
 	return (	equipeRepository.save(e));
 	}
-
+	
+	@Override
+    public void evoluerEquipes() {
+        // Placeholder implementation; replace with actual logic as needed
+    }
 	
 }
