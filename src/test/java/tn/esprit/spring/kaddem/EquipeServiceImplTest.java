@@ -77,5 +77,78 @@ import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
         verify(equipeRepository, times(1)).findById(equipe.getIdEquipe());
     }
 
+    @Test
+public void testRetrieveEquipeWithInvalidId() {
+    when(equipeRepository.findById(anyInt())).thenReturn(Optional.empty());
+    assertThrows(EntityNotFoundException.class, () -> equipeService.retrieveEquipe(999));
+    verify(equipeRepository, times(1)).findById(999);
+}
+
+@Test
+public void testDeleteEquipeWithInvalidId() {
+    when(equipeRepository.findById(anyInt())).thenReturn(Optional.empty());
+    assertThrows(EntityNotFoundException.class, () -> equipeService.deleteEquipe(999));
+    verify(equipeRepository, times(1)).findById(999);
+}
+
+@Test
+public void testEvoluerEquipesWithNoStudents() {
+    equipe.setEtudiants(Collections.emptySet());
+    List<Equipe> equipes = Collections.singletonList(equipe);
+
+    when(equipeRepository.findAll()).thenReturn(equipes);
+    equipeService.evoluerEquipes();
+
+    assertEquals(Niveau.JUNIOR, equipe.getNiveau());  // Expect no change in level
+    verify(equipeRepository, times(1)).findAll();
+    verify(equipeRepository, times(0)).save(equipe);  // No save should occur
+}
+
+@Test
+public void testEvoluerEquipesWithArchivedContracts() {
+    Contrat contrat = new Contrat();
+    contrat.setArchive(true);  // Archived contract
+    contrat.setDateFinContrat(new Date(System.currentTimeMillis() - (1000L * 60 * 60 * 24 * 365 * 2)));
+
+    Etudiant etudiant = new Etudiant();
+    etudiant.setContrats(Collections.singleton(contrat));
+
+    Set<Etudiant> etudiants = new HashSet<>();
+    etudiants.add(etudiant);
+    equipe.setEtudiants(etudiants);
+
+    List<Equipe> equipes = Collections.singletonList(equipe);
+    when(equipeRepository.findAll()).thenReturn(equipes);
+
+    equipeService.evoluerEquipes();
+    assertEquals(Niveau.JUNIOR, equipe.getNiveau());  // Expect no change in level
+    verify(equipeRepository, times(1)).findAll();
+    verify(equipeRepository, times(0)).save(equipe);  // No save should occur since contract is archived
+}
+
+@Test
+public void testEvoluerEquipesWithLessThanThreeActiveContracts() {
+    Contrat contrat = new Contrat();
+    contrat.setArchive(false);
+    contrat.setDateFinContrat(new Date(System.currentTimeMillis() - (1000L * 60 * 60 * 24 * 365 * 2))); // 2 years ago
+
+    Etudiant etudiant = new Etudiant();
+    etudiant.setContrats(Collections.singleton(contrat));
+
+    Set<Etudiant> etudiants = new HashSet<>();
+    etudiants.add(etudiant);
+    equipe.setEtudiants(etudiants);
+
+    List<Equipe> equipes = Collections.singletonList(equipe);
+    when(equipeRepository.findAll()).thenReturn(equipes);
+
+    equipeService.evoluerEquipes();
+
+    assertEquals(Niveau.JUNIOR, equipe.getNiveau());  // No change expected due to insufficient contracts
+    verify(equipeRepository, times(1)).findAll();
+    verify(equipeRepository, times(0)).save(equipe);  // No save should occur
+}
+
+
    
 }
