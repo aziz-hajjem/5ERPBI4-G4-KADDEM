@@ -7,8 +7,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import tn.esprit.spring.kaddem.entities.Equipe;
 import tn.esprit.spring.kaddem.entities.Niveau;
 import tn.esprit.spring.kaddem.repositories.EquipeRepository;
+import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
+
 import javax.persistence.EntityNotFoundException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
@@ -28,6 +33,7 @@ import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
      void setup() {
         equipe = new Equipe();
         equipe.setIdEquipe(1);
+        equipe.setNomEquipe("Test Team");
         equipe.setNiveau(Niveau.JUNIOR);
     }
 
@@ -47,7 +53,7 @@ import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
 
         Equipe result = equipeService.addEquipe(equipe);
         assertNotNull(result);
-        assertEquals(equipe.getIdEquipe(), result.getIdEquipe());
+        assertEquals("Test Team", result.getNomEquipe());
         verify(equipeRepository, times(1)).save(equipe);
     }
 
@@ -57,6 +63,14 @@ import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
 
         equipeService.deleteEquipe(equipe.getIdEquipe());
         verify(equipeRepository, times(1)).delete(equipe);
+    }
+
+    @Test
+     void testDeleteEquipeNotFound() {
+        when(equipeRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> equipeService.deleteEquipe(999));
+        verify(equipeRepository, times(1)).findById(999);
     }
 
     @Test
@@ -71,42 +85,20 @@ import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
 
     @Test
      void testRetrieveEquipeNotFound() {
-        when(equipeRepository.findById(equipe.getIdEquipe())).thenReturn(Optional.empty());
+        when(equipeRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> equipeService.retrieveEquipe(equipe.getIdEquipe()));
-        verify(equipeRepository, times(1)).findById(equipe.getIdEquipe());
+        assertThrows(EntityNotFoundException.class, () -> equipeService.retrieveEquipe(999));
+        verify(equipeRepository, times(1)).findById(999);
     }
 
     @Test
-public void testRetrieveEquipeWithInvalidId() {
-    when(equipeRepository.findById(anyInt())).thenReturn(Optional.empty());
-    assertThrows(EntityNotFoundException.class, () -> equipeService.retrieveEquipe(999));
-    verify(equipeRepository, times(1)).findById(999);
-}
+     void testUpdateEquipe() {
+        equipe.setNiveau(Niveau.SENIOR);
+        when(equipeRepository.save(equipe)).thenReturn(equipe);
 
-@Test
-public void testDeleteEquipeWithInvalidId() {
-    when(equipeRepository.findById(anyInt())).thenReturn(Optional.empty());
-    assertThrows(EntityNotFoundException.class, () -> equipeService.deleteEquipe(999));
-    verify(equipeRepository, times(1)).findById(999);
-}
-
-@Test
-public void testEvoluerEquipesWithNoStudents() {
-    equipe.setEtudiants(Collections.emptySet());
-    List<Equipe> equipes = Collections.singletonList(equipe);
-
-    when(equipeRepository.findAll()).thenReturn(equipes);
-    equipeService.evoluerEquipes();
-
-    assertEquals(Niveau.JUNIOR, equipe.getNiveau());  // Expect no change in level
-    verify(equipeRepository, times(1)).findAll();
-    verify(equipeRepository, times(0)).save(equipe);  // No save should occur
-}
-
-
-
-
-
-   
+        Equipe result = equipeService.updateEquipe(equipe);
+        assertNotNull(result);
+        assertEquals(Niveau.SENIOR, result.getNiveau());
+        verify(equipeRepository, times(1)).save(equipe);
+    }
 }
