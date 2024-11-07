@@ -13,9 +13,6 @@ import javax.persistence.EntityNotFoundException;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
-
-
 
 @ExtendWith(MockitoExtension.class)
 public class EquipeServiceImplTest {
@@ -31,7 +28,7 @@ public class EquipeServiceImplTest {
     @BeforeEach
     public void setup() {
         equipe = new Equipe();
-        equipe.setId(1);
+        equipe.setId(1);  // Assurez-vous que la classe Equipe a un setter pour l'ID ou que l'ID est public
         equipe.setNiveau(Niveau.JUNIOR);
     }
 
@@ -51,7 +48,7 @@ public class EquipeServiceImplTest {
 
         Equipe result = equipeService.addEquipe(equipe);
         assertNotNull(result);
-        assertEquals(equipe.getId(), result.getId());
+        assertEquals(equipe.getId(), result.getId());  // Assurez-vous que Equipe a une méthode getId()
         verify(equipeRepository, times(1)).save(equipe);
     }
 
@@ -85,12 +82,14 @@ public class EquipeServiceImplTest {
     public void testEvoluerEquipes() {
         Contrat contrat = new Contrat();
         contrat.setArchive(false);
-        contrat.setDateFinContrat(new Date(System.currentTimeMillis() - (1000L * 60 * 60 * 24 * 365 * 2))); // 2 years ago
+        contrat.setDateFinContrat(new Date(System.currentTimeMillis() - (1000L * 60 * 60 * 24 * 365 * 2))); // 2 ans en arrière
 
         Etudiant etudiant = new Etudiant();
         etudiant.setContrats(Collections.singleton(contrat));
 
-        equipe.setEtudiants(Collections.singletonList(etudiant));
+        Set<Etudiant> etudiants = new HashSet<>();
+        etudiants.add(etudiant);
+        equipe.setEtudiants(etudiants);
 
         List<Equipe> equipes = Collections.singletonList(equipe);
         when(equipeRepository.findAll()).thenReturn(equipes);
@@ -98,7 +97,7 @@ public class EquipeServiceImplTest {
 
         equipeService.evoluerEquipes();
 
-        assertEquals(Niveau.SENIOR, equipe.getNiveau());
+        assertEquals(Niveau.SENIOR, equipe.getNiveau());  // Vérifie que le niveau a évolué
         verify(equipeRepository, times(1)).findAll();
         verify(equipeRepository, times(1)).save(equipe);
     }
