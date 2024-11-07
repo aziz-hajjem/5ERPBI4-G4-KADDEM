@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class EquipeServiceImplTest {
+public class EquipeServiceImplTest {
 
     @Mock
     private EquipeRepository equipeRepository;
@@ -103,7 +103,7 @@ class EquipeServiceImplTest {
     }
 
     @Test
-    public void testAddEquipeWithNullValues() {
+     void testAddEquipeWithNullValues() {
         Equipe emptyEquipe = new Equipe();  // No fields set
         when(equipeRepository.save(emptyEquipe)).thenReturn(emptyEquipe);
 
@@ -114,7 +114,7 @@ class EquipeServiceImplTest {
     }
 
     @Test
-    public void testUpdateEquipeWithDifferentLevels() {
+     void testUpdateEquipeWithDifferentLevels() {
         Equipe updatedEquipe = new Equipe();
         updatedEquipe.setIdEquipe(1);
         updatedEquipe.setNomEquipe("Updated Team");
@@ -147,10 +147,15 @@ class EquipeServiceImplTest {
 
    @Test
 void testUpdateEquipeNull() {
-    Equipe result = equipeService.updateEquipe(null);
-    assertNull(result);
+    // Use assertThrows to check for the expected exception
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+        equipeService.updateEquipe(null);
+    });
+    
+    assertEquals("Equipe cannot be null", exception.getMessage());
     verify(equipeRepository, times(0)).save(any());
 }
+
 
 
     @Test
