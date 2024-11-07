@@ -13,6 +13,8 @@ import javax.persistence.EntityNotFoundException;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
+
 
 @ExtendWith(MockitoExtension.class)
 public class EquipeServiceImplTest {
