@@ -12,6 +12,7 @@ import tn.esprit.spring.kaddem.repositories.DepartementRepository;
 import tn.esprit.spring.kaddem.repositories.UniversiteRepository;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Id;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
@@ -41,25 +42,37 @@ public class UniversiteServiceImplTest {
         universite = new Universite();
         departement = new Departement();
 
-        // Use reflection to set the ID fields
-        try {
-            Field universiteIdField = Universite.class.getDeclaredField("id");
-            universiteIdField.setAccessible(true);
-            universiteIdField.set(universite, 1);
-        } catch (NoSuchFieldException e) {
-            Field universiteIdField = Universite.class.getSuperclass().getDeclaredField("id");
-            universiteIdField.setAccessible(true);
-            universiteIdField.set(universite, 1);
+        // Dynamically set the ID field using reflection
+        setIdField(universite, 1);
+        setIdField(departement, 1);
+    }
+
+    private void setIdField(Object entity, int idValue) throws Exception {
+        Field idField = null;
+        
+        // Search for a field annotated with @Id
+        for (Field field : entity.getClass().getDeclaredFields()) {
+            if (field.isAnnotationPresent(Id.class)) {
+                idField = field;
+                break;
+            }
         }
 
-        try {
-            Field departementIdField = Departement.class.getDeclaredField("id");
-            departementIdField.setAccessible(true);
-            departementIdField.set(departement, 1);
-        } catch (NoSuchFieldException e) {
-            Field departementIdField = Departement.class.getSuperclass().getDeclaredField("id");
-            departementIdField.setAccessible(true);
-            departementIdField.set(departement, 1);
+        // If no @Id field was found in the class, check its superclass
+        if (idField == null) {
+            for (Field field : entity.getClass().getSuperclass().getDeclaredFields()) {
+                if (field.isAnnotationPresent(Id.class)) {
+                    idField = field;
+                    break;
+                }
+            }
+        }
+
+        if (idField != null) {
+            idField.setAccessible(true);
+            idField.set(entity, idValue);
+        } else {
+            throw new NoSuchFieldException("No field annotated with @Id found in " + entity.getClass());
         }
     }
 
