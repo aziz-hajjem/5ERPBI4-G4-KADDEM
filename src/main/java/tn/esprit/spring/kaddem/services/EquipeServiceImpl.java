@@ -33,50 +33,67 @@ public class EquipeServiceImpl implements IEquipeService{
 		equipeRepository.delete(e);
 	}
 
-	public Equipe retrieveEquipe(Integer equipeId){
-		return equipeRepository.findById(equipeId).get();
-	}
+	public Equipe retrieveEquipe(Integer equipeId) {
+    Optional<Equipe> optionalEquipe = equipeRepository.findById(equipeId);
+    if (optionalEquipe.isPresent()) {
+        return optionalEquipe.get();
+    } else {
+        // Handle the case when Equipe is not found, maybe throw an exception
+        throw new EntityNotFoundException("Equipe with ID " + equipeId + " not found");
+    }
+}
 
 	public Equipe updateEquipe(Equipe e){
 	return (	equipeRepository.save(e));
 	}
 
-	public void evoluerEquipes(){
-		List<Equipe> equipes = (List<Equipe>) equipeRepository.findAll();
-		for (Equipe equipe : equipes) {
-			if ((equipe.getNiveau().equals(Niveau.JUNIOR)) || (equipe.getNiveau().equals(Niveau.SENIOR))) {
-				List<Etudiant> etudiants = (List<Etudiant>) equipe.getEtudiants();
-				Integer nbEtudiantsAvecContratsActifs=0;
-				for (Etudiant etudiant : etudiants) {
-					Set<Contrat> contrats = etudiant.getContrats();
-					//Set<Contrat> contratsActifs=null;
-					for (Contrat contrat : contrats) {
-						Date dateSysteme = new Date();
-						long difference_In_Time = dateSysteme.getTime() - contrat.getDateFinContrat().getTime();
-						long difference_In_Years = (difference_In_Time / (1000l * 60 * 60 * 24 * 365));
-						if ((contrat.getArchive() == false) && (difference_In_Years > 1)) {
-							//	contratsActifs.add(contrat);
-							nbEtudiantsAvecContratsActifs++;
-							break;
-						}
-						if (nbEtudiantsAvecContratsActifs >= 3) break;
-					}
-				}
-					if (nbEtudiantsAvecContratsActifs >= 3){
-						if (equipe.getNiveau().equals(Niveau.JUNIOR)){
-							equipe.setNiveau(Niveau.SENIOR);
-							equipeRepository.save(equipe);
-							break;
-						}
-						if (equipe.getNiveau().equals(Niveau.SENIOR)){
-							equipe.setNiveau(Niveau.EXPERT);
-							equipeRepository.save(equipe);
-							break;
-						}
-				}
-			}
+	public void evoluerEquipes() {
+    List<Equipe> equipes = equipeRepository.findAll();
+    
+    for (Equipe equipe : equipes) {
+        // Only process teams with JUNIOR or SENIOR level
+        if (equipe.getNiveau() == Niveau.JUNIOR || equipe.getNiveau() == Niveau.SENIOR) {
+            int nbEtudiantsAvecContratsActifs = 0;
 
-		}
+            // Check each student in the team for active contracts
+            for (Etudiant etudiant : equipe.getEtudiants()) {
+                boolean hasActiveContract = false;
 
-	}
+                // Check contracts for each student to see if there is an active contract
+                for (Contrat contrat : etudiant.getContrats()) {
+                    if (!contrat.getArchive()) { // Ensure contract is not archived
+                        Date dateSysteme = new Date();
+                        long differenceInTime = dateSysteme.getTime() - contrat.getDateFinContrat().getTime();
+                        long differenceInYears = differenceInTime / (1000L * 60 * 60 * 24 * 365);
+
+                        if (differenceInYears < 1) { // Contract is active within the past year
+                            hasActiveContract = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (hasActiveContract) {
+                    nbEtudiantsAvecContratsActifs++;
+                }
+
+                // If we have at least 3 students with active contracts, we can stop checking further
+                if (nbEtudiantsAvecContratsActifs >= 3) {
+                    break;
+                }
+            }
+
+            // Upgrade the team level if it meets the criteria
+            if (nbEtudiantsAvecContratsActifs >= 3) {
+                if (equipe.getNiveau() == Niveau.JUNIOR) {
+                    equipe.setNiveau(Niveau.SENIOR);
+                } else if (equipe.getNiveau() == Niveau.SENIOR) {
+                    equipe.setNiveau(Niveau.EXPERT);
+                }
+                equipeRepository.save(equipe);
+            }
+        }
+    }
+}
+
 }
