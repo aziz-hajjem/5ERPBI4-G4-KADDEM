@@ -12,6 +12,7 @@ import tn.esprit.spring.kaddem.repositories.DepartementRepository;
 import tn.esprit.spring.kaddem.repositories.UniversiteRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -36,12 +37,18 @@ public class UniversiteServiceImplTest {
     private Departement departement;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
         universite = new Universite();
-        universite.setId(1);  // Assuming setId method exists in Universite class
-
         departement = new Departement();
-        departement.setId(1); // Assuming setId method exists in Departement class
+
+        // Using reflection to set the private `id` fields
+        Field universiteIdField = Universite.class.getDeclaredField("id");
+        universiteIdField.setAccessible(true);
+        universiteIdField.set(universite, 1);
+
+        Field departementIdField = Departement.class.getDeclaredField("id");
+        departementIdField.setAccessible(true);
+        departementIdField.set(departement, 1);
     }
 
     @Test
