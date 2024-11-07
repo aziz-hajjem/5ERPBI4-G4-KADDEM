@@ -14,14 +14,16 @@ import java.util.Set;
 @Service
 public class UniversiteServiceImpl implements IUniversiteService {
 
-    @Autowired
+    private static final String UNIVERSITE_NOT_FOUND = "Universite not found with id ";
+
+    
     private UniversiteRepository universiteRepository;
 
-    @Autowired
+    
     private DepartementRepository departementRepository;
 
     public UniversiteServiceImpl() {
-        // Constructor body can remain empty or be removed if no special initialization is required
+        
     }
 
     public List<Universite> retrieveAllUniversites() {
@@ -38,7 +40,7 @@ public class UniversiteServiceImpl implements IUniversiteService {
 
     public Universite retrieveUniversite(Integer idUniversite) {
         return universiteRepository.findById(idUniversite)
-                .orElseThrow(() -> new EntityNotFoundException("Universite not found with id " + idUniversite));
+                .orElseThrow(() -> new EntityNotFoundException(UNIVERSITE_NOT_FOUND + idUniversite));
     }
 
     public void deleteUniversite(Integer idUniversite) {
@@ -48,9 +50,9 @@ public class UniversiteServiceImpl implements IUniversiteService {
     public void assignUniversiteToDepartement(Integer idUniversite, Integer idDepartement) {
         Universite u = universiteRepository.findById(idUniversite).orElse(null);
         Departement d = departementRepository.findById(idDepartement).orElse(null);
-        
+
         if (u == null) {
-            throw new EntityNotFoundException("Universite not found with id " + idUniversite);
+            throw new EntityNotFoundException(UNIVERSITE_NOT_FOUND + idUniversite);
         }
         if (d == null) {
             throw new EntityNotFoundException("Departement not found with id " + idDepartement);
@@ -62,7 +64,7 @@ public class UniversiteServiceImpl implements IUniversiteService {
 
     public Set<Departement> retrieveDepartementsByUniversite(Integer idUniversite) {
         Universite u = universiteRepository.findById(idUniversite)
-                .orElseThrow(() -> new EntityNotFoundException("Universite not found with id " + idUniversite));
+                .orElseThrow(() -> new EntityNotFoundException(UNIVERSITE_NOT_FOUND + idUniversite));
         return u.getDepartements();
     }
 }
