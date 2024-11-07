@@ -142,15 +142,18 @@ public class UniversiteServiceImplTest {
     }
 
     @Test
-    public void testAssignUniversiteToDepartement() {
-        when(universiteRepository.findById(1)).thenReturn(Optional.of(universite));
-        when(departementRepository.findById(1)).thenReturn(Optional.of(departement));
-        
-        universiteService.assignUniversiteToDepartement(1, 1);
-        
-        assertTrue(universite.getDepartements().contains(departement));
-        verify(universiteRepository, times(1)).save(universite);
-    }
+   public void testAssignUniversiteToDepartement() {
+    assertNotNull(universiteRepository, "universiteRepository should not be null");
+    assertNotNull(departementRepository, "departementRepository should not be null");
+    
+    when(universiteRepository.findById(1)).thenReturn(Optional.of(universite));
+    when(departementRepository.findById(1)).thenReturn(Optional.of(departement));
+    
+    universiteService.assignUniversiteToDepartement(1, 1);
+    
+    assertTrue(universite.getDepartements().contains(departement));
+    verify(universiteRepository, times(1)).save(universite);
+}
 
     @Test
     public void testAssignUniversiteToDepartementUniversiteNotFound() {
