@@ -101,4 +101,31 @@ import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
         assertEquals(Niveau.SENIOR, result.getNiveau());
         verify(equipeRepository, times(1)).save(equipe);
     }
+
+    @Test
+public void testAddEquipeWithNullValues() {
+    Equipe emptyEquipe = new Equipe();  // No fields set
+    when(equipeRepository.save(emptyEquipe)).thenReturn(emptyEquipe);
+
+    Equipe result = equipeService.addEquipe(emptyEquipe);
+    assertNotNull(result);
+    assertNull(result.getNomEquipe());
+    verify(equipeRepository, times(1)).save(emptyEquipe);
+}
+
+@Test
+public void testUpdateEquipeWithDifferentLevels() {
+    Equipe updatedEquipe = new Equipe();
+    updatedEquipe.setIdEquipe(1);
+    updatedEquipe.setNomEquipe("Updated Team");
+    updatedEquipe.setNiveau(Niveau.SENIOR);
+
+    when(equipeRepository.save(updatedEquipe)).thenReturn(updatedEquipe);
+
+    Equipe result = equipeService.updateEquipe(updatedEquipe);
+    assertEquals("Updated Team", result.getNomEquipe());
+    assertEquals(Niveau.SENIOR, result.getNiveau());
+    verify(equipeRepository, times(1)).save(updatedEquipe);
+}
+
 }
