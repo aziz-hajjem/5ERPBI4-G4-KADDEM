@@ -10,6 +10,7 @@ import tn.esprit.spring.kaddem.entities.Etudiant;
 import tn.esprit.spring.kaddem.entities.Niveau;
 import tn.esprit.spring.kaddem.repositories.EquipeRepository;
 
+import javax.persistence.EntityNotFoundException;
 
 import java.util.Date;
 import java.util.List;
