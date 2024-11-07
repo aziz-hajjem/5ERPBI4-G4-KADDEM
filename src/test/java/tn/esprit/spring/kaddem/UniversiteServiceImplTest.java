@@ -38,10 +38,10 @@ public class UniversiteServiceImplTest {
     @BeforeEach
     public void setUp() {
         universite = new Universite();
-        universite.setId(1);
+        universite.setId(1);  // Assuming setId method exists in Universite class
 
         departement = new Departement();
-        departement.setId(1);
+        departement.setId(1); // Assuming setId method exists in Departement class
     }
 
     @Test
