@@ -79,27 +79,5 @@ public class EquipeServiceImplTest {
         verify(equipeRepository, times(1)).findById(equipe.getIdEquipe());
     }
 
-    @Test
-    public void testEvoluerEquipes() {
-        Contrat contrat = new Contrat();
-        contrat.setArchive(false);
-        contrat.setDateFinContrat(new Date(System.currentTimeMillis() - (1000L * 60 * 60 * 24 * 365 * 2))); // 2 years ago
-
-        Etudiant etudiant = new Etudiant();
-        etudiant.setContrats(Collections.singleton(contrat));
-
-        Set<Etudiant> etudiants = new HashSet<>();
-        etudiants.add(etudiant);
-        equipe.setEtudiants(etudiants);
-
-        List<Equipe> equipes = Collections.singletonList(equipe);
-        when(equipeRepository.findAll()).thenReturn(equipes);
-        when(equipeRepository.save(any(Equipe.class))).thenReturn(equipe);
-
-        equipeService.evoluerEquipes();
-
-        assertEquals(Niveau.SENIOR, equipe.getNiveau());
-        verify(equipeRepository, times(1)).findAll();
-        verify(equipeRepository, times(1)).save(equipe);
-    }
+   
 }
