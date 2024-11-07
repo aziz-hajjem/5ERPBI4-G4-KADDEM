@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
 
-
 @ExtendWith(MockitoExtension.class)
 public class EquipeServiceImplTest {
 
@@ -30,7 +29,7 @@ public class EquipeServiceImplTest {
     @BeforeEach
     public void setup() {
         equipe = new Equipe();
-        equipe.setIdEquipe(1);  // Use setIdEquipe to set the ID
+        equipe.setIdEquipe(1);
         equipe.setNiveau(Niveau.JUNIOR);
     }
 
@@ -50,7 +49,7 @@ public class EquipeServiceImplTest {
 
         Equipe result = equipeService.addEquipe(equipe);
         assertNotNull(result);
-        assertEquals(equipe.getIdEquipe(), result.getIdEquipe());  // Use getIdEquipe to get the ID
+        assertEquals(equipe.getIdEquipe(), result.getIdEquipe());
         verify(equipeRepository, times(1)).save(equipe);
     }
 
@@ -99,7 +98,7 @@ public class EquipeServiceImplTest {
 
         equipeService.evoluerEquipes();
 
-        assertEquals(Niveau.SENIOR, equipe.getNiveau());  // Verify that the level evolved
+        assertEquals(Niveau.SENIOR, equipe.getNiveau());
         verify(equipeRepository, times(1)).findAll();
         verify(equipeRepository, times(1)).save(equipe);
     }
