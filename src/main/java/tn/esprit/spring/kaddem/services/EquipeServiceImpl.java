@@ -38,9 +38,13 @@ public class EquipeServiceImpl implements IEquipeService{
 
 	}
 
-	public Equipe updateEquipe(Equipe e){
-	return (	equipeRepository.save(e));
-	}
+	public Equipe updateEquipe(Equipe e) {
+    if (e == null) {
+        throw new IllegalArgumentException("Equipe cannot be null");
+    }
+    return equipeRepository.save(e);
+}
+
 
 	@Override
     public void evoluerEquipes() {

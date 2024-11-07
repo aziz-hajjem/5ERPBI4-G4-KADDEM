@@ -145,11 +145,13 @@ class EquipeServiceImplTest {
         verify(equipeRepository, times(1)).save(null);
     }
 
-    @Test
-    void testUpdateEquipeNull() {
-        assertThrows(IllegalArgumentException.class, () -> equipeService.updateEquipe(null));
-        verify(equipeRepository, times(0)).save(any());
-    }
+   @Test
+void testUpdateEquipeNull() {
+    Equipe result = equipeService.updateEquipe(null);
+    assertNull(result);
+    verify(equipeRepository, times(0)).save(any());
+}
+
 
     @Test
     void testUpdateEquipeUnchanged() {
