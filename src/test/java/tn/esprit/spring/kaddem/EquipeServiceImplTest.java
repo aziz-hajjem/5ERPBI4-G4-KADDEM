@@ -11,16 +11,15 @@ import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
+import java.util.Collections;  // <-- Add this import
 import java.util.List;
 import java.util.Optional;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
- class EquipeServiceImplTest {
+class EquipeServiceImplTest {
 
     @Mock
     private EquipeRepository equipeRepository;
@@ -31,7 +30,7 @@ import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
     private Equipe equipe;
 
     @BeforeEach
-     void setup() {
+    void setup() {
         equipe = new Equipe();
         equipe.setIdEquipe(1);
         equipe.setNomEquipe("Test Team");
@@ -39,7 +38,7 @@ import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
     }
 
     @Test
-     void testRetrieveAllEquipes() {
+    void testRetrieveAllEquipes() {
         List<Equipe> equipes = Arrays.asList(equipe);
         when(equipeRepository.findAll()).thenReturn(equipes);
 
@@ -49,7 +48,7 @@ import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
     }
 
     @Test
-     void testAddEquipe() {
+    void testAddEquipe() {
         when(equipeRepository.save(equipe)).thenReturn(equipe);
 
         Equipe result = equipeService.addEquipe(equipe);
@@ -59,7 +58,7 @@ import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
     }
 
     @Test
-     void testDeleteEquipe() {
+    void testDeleteEquipe() {
         when(equipeRepository.findById(equipe.getIdEquipe())).thenReturn(Optional.of(equipe));
 
         equipeService.deleteEquipe(equipe.getIdEquipe());
@@ -67,7 +66,7 @@ import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
     }
 
     @Test
-     void testDeleteEquipeNotFound() {
+    void testDeleteEquipeNotFound() {
         when(equipeRepository.findById(anyInt())).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> equipeService.deleteEquipe(999));
@@ -75,7 +74,7 @@ import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
     }
 
     @Test
-     void testRetrieveEquipe() {
+    void testRetrieveEquipe() {
         when(equipeRepository.findById(equipe.getIdEquipe())).thenReturn(Optional.of(equipe));
 
         Equipe result = equipeService.retrieveEquipe(equipe.getIdEquipe());
@@ -85,7 +84,7 @@ import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
     }
 
     @Test
-     void testRetrieveEquipeNotFound() {
+    void testRetrieveEquipeNotFound() {
         when(equipeRepository.findById(anyInt())).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> equipeService.retrieveEquipe(999));
@@ -93,7 +92,7 @@ import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
     }
 
     @Test
-     void testUpdateEquipe() {
+    void testUpdateEquipe() {
         equipe.setNiveau(Niveau.SENIOR);
         when(equipeRepository.save(equipe)).thenReturn(equipe);
 
@@ -104,72 +103,69 @@ import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
     }
 
     @Test
-public void testAddEquipeWithNullValues() {
-    Equipe emptyEquipe = new Equipe();  // No fields set
-    when(equipeRepository.save(emptyEquipe)).thenReturn(emptyEquipe);
+    public void testAddEquipeWithNullValues() {
+        Equipe emptyEquipe = new Equipe();  // No fields set
+        when(equipeRepository.save(emptyEquipe)).thenReturn(emptyEquipe);
 
-    Equipe result = equipeService.addEquipe(emptyEquipe);
-    assertNotNull(result);
-    assertNull(result.getNomEquipe());
-    verify(equipeRepository, times(1)).save(emptyEquipe);
-}
+        Equipe result = equipeService.addEquipe(emptyEquipe);
+        assertNotNull(result);
+        assertNull(result.getNomEquipe());
+        verify(equipeRepository, times(1)).save(emptyEquipe);
+    }
 
-@Test
-public void testUpdateEquipeWithDifferentLevels() {
-    Equipe updatedEquipe = new Equipe();
-    updatedEquipe.setIdEquipe(1);
-    updatedEquipe.setNomEquipe("Updated Team");
-    updatedEquipe.setNiveau(Niveau.SENIOR);
+    @Test
+    public void testUpdateEquipeWithDifferentLevels() {
+        Equipe updatedEquipe = new Equipe();
+        updatedEquipe.setIdEquipe(1);
+        updatedEquipe.setNomEquipe("Updated Team");
+        updatedEquipe.setNiveau(Niveau.SENIOR);
 
-    when(equipeRepository.save(updatedEquipe)).thenReturn(updatedEquipe);
+        when(equipeRepository.save(updatedEquipe)).thenReturn(updatedEquipe);
 
-    Equipe result = equipeService.updateEquipe(updatedEquipe);
-    assertEquals("Updated Team", result.getNomEquipe());
-    assertEquals(Niveau.SENIOR, result.getNiveau());
-    verify(equipeRepository, times(1)).save(updatedEquipe);
-}
+        Equipe result = equipeService.updateEquipe(updatedEquipe);
+        assertEquals("Updated Team", result.getNomEquipe());
+        assertEquals(Niveau.SENIOR, result.getNiveau());
+        verify(equipeRepository, times(1)).save(updatedEquipe);
+    }
 
-@Test
-void testRetrieveAllEquipesEmpty() {
-    when(equipeRepository.findAll()).thenReturn(Collections.emptyList());
+    @Test
+    void testRetrieveAllEquipesEmpty() {
+        when(equipeRepository.findAll()).thenReturn(Collections.emptyList());
 
-    List<Equipe> result = equipeService.retrieveAllEquipes();
-    assertTrue(result.isEmpty(), "The list should be empty");
-    verify(equipeRepository, times(1)).findAll();
-}
+        List<Equipe> result = equipeService.retrieveAllEquipes();
+        assertTrue(result.isEmpty(), "The list should be empty");
+        verify(equipeRepository, times(1)).findAll();
+    }
 
-@Test
-void testAddEquipeNull() {
-    when(equipeRepository.save(null)).thenThrow(new IllegalArgumentException("Equipe cannot be null"));
+    @Test
+    void testAddEquipeNull() {
+        when(equipeRepository.save(null)).thenThrow(new IllegalArgumentException("Equipe cannot be null"));
 
-    assertThrows(IllegalArgumentException.class, () -> equipeService.addEquipe(null));
-    verify(equipeRepository, times(1)).save(null);
-}
+        assertThrows(IllegalArgumentException.class, () -> equipeService.addEquipe(null));
+        verify(equipeRepository, times(1)).save(null);
+    }
 
-@Test
-void testUpdateEquipeNull() {
-    assertThrows(IllegalArgumentException.class, () -> equipeService.updateEquipe(null));
-    verify(equipeRepository, times(0)).save(any());
-}
+    @Test
+    void testUpdateEquipeNull() {
+        assertThrows(IllegalArgumentException.class, () -> equipeService.updateEquipe(null));
+        verify(equipeRepository, times(0)).save(any());
+    }
 
-@Test
-void testUpdateEquipeUnchanged() {
-    when(equipeRepository.save(equipe)).thenReturn(equipe);
+    @Test
+    void testUpdateEquipeUnchanged() {
+        when(equipeRepository.save(equipe)).thenReturn(equipe);
 
-    Equipe result = equipeService.updateEquipe(equipe);
-    assertEquals(equipe.getNomEquipe(), result.getNomEquipe());
-    assertEquals(equipe.getNiveau(), result.getNiveau());
-    verify(equipeRepository, times(1)).save(equipe);
-}
+        Equipe result = equipeService.updateEquipe(equipe);
+        assertEquals(equipe.getNomEquipe(), result.getNomEquipe());
+        assertEquals(equipe.getNiveau(), result.getNiveau());
+        verify(equipeRepository, times(1)).save(equipe);
+    }
 
-@Test
-void testDeleteEquipeWithInvalidId() {
-    when(equipeRepository.findById(anyInt())).thenReturn(Optional.empty());
+    @Test
+    void testDeleteEquipeWithInvalidId() {
+        when(equipeRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-    assertThrows(EntityNotFoundException.class, () -> equipeService.deleteEquipe(12345));
-    verify(equipeRepository, times(1)).findById(12345);
-}
-
-
-
+        assertThrows(EntityNotFoundException.class, () -> equipeService.deleteEquipe(12345));
+        verify(equipeRepository, times(1)).findById(12345);
+    }
 }
