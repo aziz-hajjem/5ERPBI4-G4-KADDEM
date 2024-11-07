@@ -4,17 +4,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import tn.esprit.spring.kaddem.entities.Contrat;
 import tn.esprit.spring.kaddem.entities.Equipe;
-import tn.esprit.spring.kaddem.entities.Etudiant;
-import tn.esprit.spring.kaddem.entities.Niveau;
+
 import tn.esprit.spring.kaddem.repositories.EquipeRepository;
 
 import javax.persistence.EntityNotFoundException;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
+
 
 @Slf4j
 @AllArgsConstructor
@@ -44,7 +41,7 @@ public class EquipeServiceImpl implements IEquipeService{
 	public Equipe updateEquipe(Equipe e){
 	return (	equipeRepository.save(e));
 	}
-	
+
 	@Override
     public void evoluerEquipes() {
         // Placeholder implementation; replace with actual logic as needed
