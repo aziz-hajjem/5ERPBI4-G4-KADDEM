@@ -41,14 +41,26 @@ public class UniversiteServiceImplTest {
         universite = new Universite();
         departement = new Departement();
 
-        // Using reflection to set the private `id` fields
-        Field universiteIdField = Universite.class.getDeclaredField("id");
-        universiteIdField.setAccessible(true);
-        universiteIdField.set(universite, 1);
+        // Use reflection to set the ID fields
+        try {
+            Field universiteIdField = Universite.class.getDeclaredField("id");
+            universiteIdField.setAccessible(true);
+            universiteIdField.set(universite, 1);
+        } catch (NoSuchFieldException e) {
+            Field universiteIdField = Universite.class.getSuperclass().getDeclaredField("id");
+            universiteIdField.setAccessible(true);
+            universiteIdField.set(universite, 1);
+        }
 
-        Field departementIdField = Departement.class.getDeclaredField("id");
-        departementIdField.setAccessible(true);
-        departementIdField.set(departement, 1);
+        try {
+            Field departementIdField = Departement.class.getDeclaredField("id");
+            departementIdField.setAccessible(true);
+            departementIdField.set(departement, 1);
+        } catch (NoSuchFieldException e) {
+            Field departementIdField = Departement.class.getSuperclass().getDeclaredField("id");
+            departementIdField.setAccessible(true);
+            departementIdField.set(departement, 1);
+        }
     }
 
     @Test
