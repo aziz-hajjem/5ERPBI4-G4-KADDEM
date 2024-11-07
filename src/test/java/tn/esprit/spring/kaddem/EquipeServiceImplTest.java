@@ -127,25 +127,48 @@ public void testUpdateEquipeWithDifferentLevels() {
     assertEquals(Niveau.SENIOR, result.getNiveau());
     verify(equipeRepository, times(1)).save(updatedEquipe);
 }
+
 @Test
-public void testRetrieveAllEquipesEmpty() {
+void testRetrieveAllEquipesEmpty() {
     when(equipeRepository.findAll()).thenReturn(Collections.emptyList());
 
     List<Equipe> result = equipeService.retrieveAllEquipes();
-    assertTrue(result.isEmpty());
+    assertTrue(result.isEmpty(), "The list should be empty");
     verify(equipeRepository, times(1)).findAll();
 }
+
 @Test
-public void testAddEquipeNull() {
+void testAddEquipeNull() {
     when(equipeRepository.save(null)).thenThrow(new IllegalArgumentException("Equipe cannot be null"));
 
     assertThrows(IllegalArgumentException.class, () -> equipeService.addEquipe(null));
     verify(equipeRepository, times(1)).save(null);
 }
+
 @Test
-public void testUpdateEquipeNull() {
+void testUpdateEquipeNull() {
     assertThrows(IllegalArgumentException.class, () -> equipeService.updateEquipe(null));
+    verify(equipeRepository, times(0)).save(any());
 }
+
+@Test
+void testUpdateEquipeUnchanged() {
+    when(equipeRepository.save(equipe)).thenReturn(equipe);
+
+    Equipe result = equipeService.updateEquipe(equipe);
+    assertEquals(equipe.getNomEquipe(), result.getNomEquipe());
+    assertEquals(equipe.getNiveau(), result.getNiveau());
+    verify(equipeRepository, times(1)).save(equipe);
+}
+
+@Test
+void testDeleteEquipeWithInvalidId() {
+    when(equipeRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> equipeService.deleteEquipe(12345));
+    verify(equipeRepository, times(1)).findById(12345);
+}
+
 
 
 }
