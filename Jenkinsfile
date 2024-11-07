@@ -69,6 +69,7 @@ pipeline {
                        -Dsonar.password=Dzenkinson12@ \
                        -Dsonar.exclusions="src/main/java/tn/esprit/spring/kaddem/entities/Contrat.java,
                        src/main/java/tn/esprit/spring/kaddem/entities/DetailContrat.java,
+                       src/main/java/tn/esprit/spring/kaddem/entities/DetailEquipe.java,
                        src/main/java/tn/esprit/spring/kaddem/entities/Etudiant.java,
                        src/main/java/tn/esprit/spring/kaddem/entities/Equipe.java,
                        src/main/java/tn/esprit/spring/kaddem/entities/Contrat.java,
