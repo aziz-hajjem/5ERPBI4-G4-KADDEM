@@ -80,7 +80,7 @@ public class UniversiteServiceImplTest {
     }
 
     @Test
-    public void testRetrieveAllUniversites() {
+     void testRetrieveAllUniversites() {
         when(universiteRepository.findAll()).thenReturn(Collections.singletonList(universite));
         
         List<Universite> result = universiteService.retrieveAllUniversites();
@@ -91,7 +91,7 @@ public class UniversiteServiceImplTest {
     }
 
     @Test
-    public void testAddUniversite() {
+     void testAddUniversite() {
         when(universiteRepository.save(universite)).thenReturn(universite);
         
         Universite result = universiteService.addUniversite(universite);
@@ -102,7 +102,7 @@ public class UniversiteServiceImplTest {
     }
 
     @Test
-    public void testUpdateUniversite() {
+     void testUpdateUniversite() {
         when(universiteRepository.save(universite)).thenReturn(universite);
         
         Universite result = universiteService.updateUniversite(universite);
@@ -113,7 +113,7 @@ public class UniversiteServiceImplTest {
     }
 
     @Test
-    public void testRetrieveUniversiteExists() {
+     void testRetrieveUniversiteExists() {
         when(universiteRepository.findById(1)).thenReturn(Optional.of(universite));
         
         Universite result = universiteService.retrieveUniversite(1);
@@ -124,7 +124,7 @@ public class UniversiteServiceImplTest {
     }
 
     @Test
-    public void testRetrieveUniversiteNotFound() {
+     void testRetrieveUniversiteNotFound() {
         when(universiteRepository.findById(1)).thenReturn(Optional.empty());
         
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
@@ -136,7 +136,7 @@ public class UniversiteServiceImplTest {
     }
 
     @Test
-    public void testDeleteUniversite() {
+     void testDeleteUniversite() {
         when(universiteRepository.findById(1)).thenReturn(Optional.of(universite));
         
         universiteService.deleteUniversite(1);
@@ -145,7 +145,7 @@ public class UniversiteServiceImplTest {
     }
 
     @Test
-    public void testAssignUniversiteToDepartement() {
+     void testAssignUniversiteToDepartement() {
         when(universiteRepository.findById(1)).thenReturn(Optional.of(universite));
         when(departementRepository.findById(1)).thenReturn(Optional.of(departement));
         
@@ -156,7 +156,7 @@ public class UniversiteServiceImplTest {
     }
 
     @Test
-    public void testAssignUniversiteToDepartementUniversiteNotFound() {
+     void testAssignUniversiteToDepartementUniversiteNotFound() {
         when(universiteRepository.findById(1)).thenReturn(Optional.empty());
         
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
@@ -168,7 +168,7 @@ public class UniversiteServiceImplTest {
     }
 
     @Test
-    public void testAssignUniversiteToDepartementDepartementNotFound() {
+     void testAssignUniversiteToDepartementDepartementNotFound() {
         when(universiteRepository.findById(1)).thenReturn(Optional.of(universite));
         when(departementRepository.findById(1)).thenReturn(Optional.empty());
         
@@ -181,7 +181,7 @@ public class UniversiteServiceImplTest {
     }
 
     @Test
-    public void testRetrieveDepartementsByUniversite() {
+     void testRetrieveDepartementsByUniversite() {
         universite.setDepartements(Set.of(departement));
         when(universiteRepository.findById(1)).thenReturn(Optional.of(universite));
         
@@ -193,7 +193,7 @@ public class UniversiteServiceImplTest {
     }
 
     @Test
-    public void testRetrieveDepartementsByUniversiteNotFound() {
+     void testRetrieveDepartementsByUniversiteNotFound() {
         when(universiteRepository.findById(1)).thenReturn(Optional.empty());
         
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
