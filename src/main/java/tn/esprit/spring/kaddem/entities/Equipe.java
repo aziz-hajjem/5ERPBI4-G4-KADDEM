@@ -93,5 +93,6 @@ public class Equipe implements Serializable{
     public void setNiveau(Niveau niveau) {
         this.niveau = niveau;
     }
+    
 
 }

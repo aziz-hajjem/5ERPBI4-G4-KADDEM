@@ -30,7 +30,7 @@ public class EquipeServiceImplTest {
     @BeforeEach
     public void setup() {
         equipe = new Equipe();
-        equipe.setId(1);  // Assurez-vous que la classe Equipe a un setter pour l'ID ou que l'ID est public
+        equipe.setIdEquipe(1);  // Use setIdEquipe to set the ID
         equipe.setNiveau(Niveau.JUNIOR);
     }
 
@@ -50,41 +50,41 @@ public class EquipeServiceImplTest {
 
         Equipe result = equipeService.addEquipe(equipe);
         assertNotNull(result);
-        assertEquals(equipe.getId(), result.getId());  // Assurez-vous que Equipe a une méthode getId()
+        assertEquals(equipe.getIdEquipe(), result.getIdEquipe());  // Use getIdEquipe to get the ID
         verify(equipeRepository, times(1)).save(equipe);
     }
 
     @Test
     public void testDeleteEquipe() {
-        when(equipeRepository.findById(equipe.getId())).thenReturn(Optional.of(equipe));
+        when(equipeRepository.findById(equipe.getIdEquipe())).thenReturn(Optional.of(equipe));
 
-        equipeService.deleteEquipe(equipe.getId());
+        equipeService.deleteEquipe(equipe.getIdEquipe());
         verify(equipeRepository, times(1)).delete(equipe);
     }
 
     @Test
     public void testRetrieveEquipe() {
-        when(equipeRepository.findById(equipe.getId())).thenReturn(Optional.of(equipe));
+        when(equipeRepository.findById(equipe.getIdEquipe())).thenReturn(Optional.of(equipe));
 
-        Equipe result = equipeService.retrieveEquipe(equipe.getId());
+        Equipe result = equipeService.retrieveEquipe(equipe.getIdEquipe());
         assertNotNull(result);
-        assertEquals(equipe.getId(), result.getId());
-        verify(equipeRepository, times(1)).findById(equipe.getId());
+        assertEquals(equipe.getIdEquipe(), result.getIdEquipe());
+        verify(equipeRepository, times(1)).findById(equipe.getIdEquipe());
     }
 
     @Test
     public void testRetrieveEquipeNotFound() {
-        when(equipeRepository.findById(equipe.getId())).thenReturn(Optional.empty());
+        when(equipeRepository.findById(equipe.getIdEquipe())).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> equipeService.retrieveEquipe(equipe.getId()));
-        verify(equipeRepository, times(1)).findById(equipe.getId());
+        assertThrows(EntityNotFoundException.class, () -> equipeService.retrieveEquipe(equipe.getIdEquipe()));
+        verify(equipeRepository, times(1)).findById(equipe.getIdEquipe());
     }
 
     @Test
     public void testEvoluerEquipes() {
         Contrat contrat = new Contrat();
         contrat.setArchive(false);
-        contrat.setDateFinContrat(new Date(System.currentTimeMillis() - (1000L * 60 * 60 * 24 * 365 * 2))); // 2 ans en arrière
+        contrat.setDateFinContrat(new Date(System.currentTimeMillis() - (1000L * 60 * 60 * 24 * 365 * 2))); // 2 years ago
 
         Etudiant etudiant = new Etudiant();
         etudiant.setContrats(Collections.singleton(contrat));
@@ -99,7 +99,7 @@ public class EquipeServiceImplTest {
 
         equipeService.evoluerEquipes();
 
-        assertEquals(Niveau.SENIOR, equipe.getNiveau());  // Vérifie que le niveau a évolué
+        assertEquals(Niveau.SENIOR, equipe.getNiveau());  // Verify that the level evolved
         verify(equipeRepository, times(1)).findAll();
         verify(equipeRepository, times(1)).save(equipe);
     }
