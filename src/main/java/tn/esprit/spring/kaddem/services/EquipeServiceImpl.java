@@ -9,8 +9,8 @@ import tn.esprit.spring.kaddem.entities.Equipe;
 import tn.esprit.spring.kaddem.entities.Etudiant;
 import tn.esprit.spring.kaddem.entities.Niveau;
 import tn.esprit.spring.kaddem.repositories.EquipeRepository;
-import java.util.Optional;
-import javax.persistence.EntityNotFoundException;
+
+
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -35,7 +35,9 @@ public class EquipeServiceImpl implements IEquipeService{
 	}
 
 	public Equipe retrieveEquipe(Integer equipeId){
-		return equipeRepository.findById(equipeId).get();
+		return equipeRepository.findById(equipeId)
+                       .orElseThrow(() -> new EntityNotFoundException("Equipe with ID " + equipeId + " not found"));
+
 	}
 
 	public Equipe updateEquipe(Equipe e){
@@ -55,7 +57,7 @@ public class EquipeServiceImpl implements IEquipeService{
 						Date dateSysteme = new Date();
 						long difference_In_Time = dateSysteme.getTime() - contrat.getDateFinContrat().getTime();
 						long difference_In_Years = (difference_In_Time / (1000l * 60 * 60 * 24 * 365));
-						if ((contrat.getArchive() == false) && (difference_In_Years > 1)) {
+						if ((!contrat.getArchive()) && (difference_In_Years > 1)) {
 							//	contratsActifs.add(contrat);
 							nbEtudiantsAvecContratsActifs++;
 							break;
