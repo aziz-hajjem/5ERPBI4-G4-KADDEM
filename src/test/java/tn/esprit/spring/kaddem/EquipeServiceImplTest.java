@@ -4,9 +4,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import tn.esprit.spring.kaddem.entities.Contrat;
 import tn.esprit.spring.kaddem.entities.Equipe;
-import tn.esprit.spring.kaddem.entities.Etudiant;
 import tn.esprit.spring.kaddem.entities.Niveau;
 import tn.esprit.spring.kaddem.repositories.EquipeRepository;
 import javax.persistence.EntityNotFoundException;
@@ -16,7 +14,7 @@ import static org.mockito.Mockito.*;
 import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
-public class EquipeServiceImplTest {
+ class EquipeServiceImplTest {
 
     @Mock
     private EquipeRepository equipeRepository;
@@ -27,14 +25,14 @@ public class EquipeServiceImplTest {
     private Equipe equipe;
 
     @BeforeEach
-    public void setup() {
+     void setup() {
         equipe = new Equipe();
         equipe.setIdEquipe(1);
         equipe.setNiveau(Niveau.JUNIOR);
     }
 
     @Test
-    public void testRetrieveAllEquipes() {
+     void testRetrieveAllEquipes() {
         List<Equipe> equipes = Arrays.asList(equipe);
         when(equipeRepository.findAll()).thenReturn(equipes);
 
@@ -44,7 +42,7 @@ public class EquipeServiceImplTest {
     }
 
     @Test
-    public void testAddEquipe() {
+     void testAddEquipe() {
         when(equipeRepository.save(equipe)).thenReturn(equipe);
 
         Equipe result = equipeService.addEquipe(equipe);
@@ -54,7 +52,7 @@ public class EquipeServiceImplTest {
     }
 
     @Test
-    public void testDeleteEquipe() {
+     void testDeleteEquipe() {
         when(equipeRepository.findById(equipe.getIdEquipe())).thenReturn(Optional.of(equipe));
 
         equipeService.deleteEquipe(equipe.getIdEquipe());
@@ -62,7 +60,7 @@ public class EquipeServiceImplTest {
     }
 
     @Test
-    public void testRetrieveEquipe() {
+     void testRetrieveEquipe() {
         when(equipeRepository.findById(equipe.getIdEquipe())).thenReturn(Optional.of(equipe));
 
         Equipe result = equipeService.retrieveEquipe(equipe.getIdEquipe());
@@ -72,7 +70,7 @@ public class EquipeServiceImplTest {
     }
 
     @Test
-    public void testRetrieveEquipeNotFound() {
+     void testRetrieveEquipeNotFound() {
         when(equipeRepository.findById(equipe.getIdEquipe())).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> equipeService.retrieveEquipe(equipe.getIdEquipe()));
