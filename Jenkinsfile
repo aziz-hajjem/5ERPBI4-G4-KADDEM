@@ -131,23 +131,23 @@ pipeline {
 
     }
     //hello azouz
-    // post {
-    //     success {
-    //         mail to: 'khmiriiheb3@gmail.com',
-    //              subject: "Pipeline Jenkins - Success - Build #${BUILD_NUMBER}",
-    //              body: """Pipeline Jenkins
+     post {
+         success {
+             mail to: 'mohamedanis.houri@esprit.tn',
+                  subject: "Pipeline Jenkins - Success - Build #${BUILD_NUMBER}",
+                  body: """Pipeline Jenkins
 
-    //              Final Report: The pipeline has completed successfully. Build number: ${BUILD_NUMBER}. No action required."""
-    //     }
-    //     failure {
-    //         mail to: 'khmiriiheb3@gmail.com',
-    //              subject: "Pipeline Jenkins - Failure - Build #${BUILD_NUMBER}",
-    //              body: """Pipeline Jenkins
+                  Final Report: The pipeline has completed successfully. Build number: ${BUILD_NUMBER}. No action required."""
+         }
+         failure {
+             mail to: 'mohamedanis.houri@esprit.tn',
+                  subject: "Pipeline Jenkins - Failure - Build #${BUILD_NUMBER}",
+                  body: """Pipeline Jenkins
 
-    //              Final Report: The pipeline has failed. Build number: ${BUILD_NUMBER}. Please check the logs and take necessary actions."""
-    //     }
-    //     always {
-    //         echo 'Pipeline completed.'
-    //     }
-    // }
+                  Final Report: The pipeline has failed. Build number: ${BUILD_NUMBER}. Please check the logs and take necessary actions."""
+         }
+        always {
+             echo 'Pipeline completed.'
+         }
+     }
 }
