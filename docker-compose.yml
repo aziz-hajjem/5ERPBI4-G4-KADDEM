@@ -15,7 +15,7 @@ services:
   app-kaddem:
     depends_on:
       - mysqlDb
-    image: zaymen/kaddem:0.0.1  # Utilisez ici la version spécifique 0.0.1
+    image: firas20/kaddem:0.0.1  # Utilisez ici la version spécifique 0.0.1
     restart: on-failure
     ports:
       - "8082:8082"
