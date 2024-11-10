@@ -141,7 +141,7 @@ pipeline {
          failure {
              mail to: 'saadaoui.walid@esprit.tn',
                   subject: "Pipeline Jenkins - Failure - Build #${BUILD_NUMBER}",
-                  body: """Pipeline Jenkins - Build #${BUILD_NUMBER} failed during the ${currentBuild.currentStage} stage.
+                  body: """Pipeline Jenkins - Build #${BUILD_NUMBER} failed during the #${currentBuild.currentStage} stage.
 
 Please check the logs for more details."""
          }
