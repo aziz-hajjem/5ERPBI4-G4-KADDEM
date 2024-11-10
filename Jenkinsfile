@@ -131,22 +131,38 @@ pipeline {
     }
     
      post {
-         success {
-             mail to: 'saadaoui.walid@esprit.tn',
-                  subject: "Pipeline Jenkins - Success - Build #${BUILD_NUMBER}",
-                  body: """Pipeline Jenkins
-
-                  Final Report: The pipeline has completed successfully. Build number: ${BUILD_NUMBER}. No action required."""
-         }
-         failure {
-             mail to: 'saadaoui.walid@esprit.tn',
-                  subject: "Pipeline Jenkins - Failure - Build #${BUILD_NUMBER}",
-                  body: """Pipeline Jenkins - Build #${BUILD_NUMBER} failed during the #${currentBuild.currentStage} stage.
-
-Please check the logs for more details."""
-         }
-         always {
-             echo 'Pipeline completed.'
-         }
-     }
+        success {
+            echo 'Sending success email...'
+            mail to: 'khmiriiheb3@gmail.com',
+                 subject: "Pipeline Jenkins - Success - Build #${BUILD_NUMBER}",
+                 body: """<html>
+                            <body>
+                                <h2 style="color: #4CAF50;">Khmiri_Iheb_5ERPBI4 Build ${BUILD_NUMBER}</h2>
+                                <div style="border: 2px solid #4CAF50; padding: 10px;">
+                                    <h3 style="background-color: #4CAF50; color: white; padding: 10px; text-align: center;">
+                                        Pipeline Status: SUCCESS
+                                    </h3>
+                                    <p>Check the <a href="${BUILD_URL}console">console output</a> for more details.</p>
+                                </div>
+                            </body>
+                          </html>""",
+                 mimeType: 'text/html'
+        }
+        failure {
+            echo 'Sending failure email...'
+            mail to: 'khmiriiheb3@gmail.com',
+                 subject: "Pipeline Jenkins - Failure - Build #${BUILD_NUMBER}",
+                 body: """<html>
+                            <body>
+                                <h2 style="color: #D32F2F;">Khmiri_Iheb_5ERPBI4 Build ${BUILD_NUMBER}</h2>
+                                <div style="border: 2px solid #D32F2F; padding: 10px;">
+                                    <h3 style="background-color: #D32F2F; color: white; padding: 10px; text-align: center;">
+                                        Pipeline Status: FAILURE
+                                    </h3>
+                                    <p>Check the <a href="${BUILD_URL}console">console output</a> for more details.</p>
+                                </div>
+                            </body>
+                          </html>""",
+                 mimeType: 'text/html'
+        }
 }
