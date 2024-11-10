@@ -112,7 +112,7 @@ pipeline {
             steps {
                 script {
                     echo 'Logging into DockerHub and Pushing Image'
-                    sh 'docker login -u walid259 -p walidsda1'
+                   // sh 'docker login -u walid259 -p walidsda1'
                     sh 'docker push walid259/kaddem:0.0.1'
                 }
             }
@@ -141,9 +141,9 @@ pipeline {
          failure {
              mail to: 'saadaoui.walid@esprit.tn',
                   subject: "Pipeline Jenkins - Failure - Build #${BUILD_NUMBER}",
-                  body: """Pipeline Jenkins
+                  body: """Pipeline Jenkins - Build #${BUILD_NUMBER} failed during the ${currentBuild.currentStage} stage.
 
-                  Final Report: The pipeline has failed. Build number: ${BUILD_NUMBER}. Please check the logs and take necessary actions."""
+Please check the logs for more details."""
          }
          always {
              echo 'Pipeline completed.'
