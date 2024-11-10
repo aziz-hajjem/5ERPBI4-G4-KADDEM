@@ -112,7 +112,7 @@ pipeline {
             steps {
                 script {
                     echo 'Logging into DockerHub and Pushing Image'
-                   // sh 'docker login -u walid259 -p walidsda1'
+                    sh 'docker login -u walid259 -p walidsda1'
                     sh 'docker push walid259/kaddem:0.0.1'
                 }
             }
