@@ -133,11 +133,11 @@ pipeline {
      post {
         success {
             echo 'Sending success email...'
-            mail to: 'khmiriiheb3@gmail.com',
+            mail to: 'saadaoui.walid@esprit.tn',
                  subject: "Pipeline Jenkins - Success - Build #${BUILD_NUMBER}",
                  body: """<html>
                             <body>
-                                <h2 style="color: #4CAF50;">Khmiri_Iheb_5ERPBI4 Build ${BUILD_NUMBER}</h2>
+                                <h2 style="color: #4CAF50;">Saadaoui_Walid_5ERPBI4 Build ${BUILD_NUMBER}</h2>
                                 <div style="border: 2px solid #4CAF50; padding: 10px;">
                                     <h3 style="background-color: #4CAF50; color: white; padding: 10px; text-align: center;">
                                         Pipeline Status: SUCCESS
@@ -150,11 +150,11 @@ pipeline {
         }
         failure {
             echo 'Sending failure email...'
-            mail to: 'khmiriiheb3@gmail.com',
+            mail to: 'saadaoui.walid@esprit.tn',
                  subject: "Pipeline Jenkins - Failure - Build #${BUILD_NUMBER}",
                  body: """<html>
                             <body>
-                                <h2 style="color: #D32F2F;">Khmiri_Iheb_5ERPBI4 Build ${BUILD_NUMBER}</h2>
+                                <h2 style="color: #D32F2F;">Saadaoui_Walid_5ERPBI4 Build ${BUILD_NUMBER}</h2>
                                 <div style="border: 2px solid #D32F2F; padding: 10px;">
                                     <h3 style="background-color: #D32F2F; color: white; padding: 10px; text-align: center;">
                                         Pipeline Status: FAILURE
