@@ -132,22 +132,59 @@ pipeline {
     }
     //hello azouz
      post {
-         success {
-             mail to: 'mohamedanis.houri@esprit.tn',
-                  subject: "Pipeline Jenkins - Success - Build #${BUILD_NUMBER}",
-                  body: """Pipeline Jenkins
+    success {
+        mail to: 'mohamedanis.houri@esprit.tn',
+            subject: "✅ Jenkins Pipeline Success - Build #${BUILD_NUMBER}",
+            body: """
+            <html>
+            <body>
+                <h2 style="color: #4CAF50;">Jenkins Pipeline - Success</h2>
+                <p>Dear Mohamed Anis,</p>
+                <p>The Jenkins pipeline has completed successfully.</p>
+                <table style="border-collapse: collapse; width: 50%;">
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;"><strong>Build Number</strong></td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">${BUILD_NUMBER}</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;"><strong>Status</strong></td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">Success</td>
+                    </tr>
+                </table>
+                <p>No further action is required.</p>
+                <p>Best regards,<br>Jenkins CI/CD System</p>
+            </body>
+            </html>
+            """
+    }
+    failure {
+        mail to: 'mohamedanis.houri@esprit.tn',
+            subject: "❌ Jenkins Pipeline Failure - Build #${BUILD_NUMBER}",
+            body: """
+            <html>
+            <body>
+                <h2 style="color: #f44336;">Jenkins Pipeline - Failure</h2>
+                <p>Dear Mohamed Anis,</p>
+                <p>The Jenkins pipeline has encountered an error and failed.</p>
+                <table style="border-collapse: collapse; width: 50%;">
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;"><strong>Build Number</strong></td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">${BUILD_NUMBER}</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;"><strong>Status</strong></td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">Failure</td>
+                    </tr>
+                </table>
+                <p>Please check the Jenkins logs for details and take the necessary actions.</p>
+                <p>Best regards,<br>Jenkins CI/CD System</p>
+            </body>
+            </html>
+            """
+    }
+    always {
+        echo 'Pipeline completed.'
+    }
+}
 
-                  Final Report: The pipeline has completed successfully. Build number: ${BUILD_NUMBER}. No action required."""
-         }
-         failure {
-             mail to: 'mohamedanis.houri@esprit.tn',
-                  subject: "Pipeline Jenkins - Failure - Build #${BUILD_NUMBER}",
-                  body: """Pipeline Jenkins
-
-                  Final Report: The pipeline has failed. Build number: ${BUILD_NUMBER}. Please check the logs and take necessary actions."""
-         }
-        always {
-             echo 'Pipeline completed.'
-         }
-     }
 }
