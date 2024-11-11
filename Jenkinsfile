@@ -135,6 +135,7 @@ pipeline {
     success {
         mail to: 'mohamedanis.houri@esprit.tn',
             subject: "✅ Jenkins Pipeline Success - Build #${BUILD_NUMBER}",
+            mimeType: 'text/html',
             body: """
             <html>
             <body>
@@ -160,6 +161,7 @@ pipeline {
     failure {
         mail to: 'mohamedanis.houri@esprit.tn',
             subject: "❌ Jenkins Pipeline Failure - Build #${BUILD_NUMBER}",
+            mimeType: 'text/html',
             body: """
             <html>
             <body>
