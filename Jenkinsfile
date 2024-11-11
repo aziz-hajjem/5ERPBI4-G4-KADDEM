@@ -130,21 +130,38 @@ pipeline {
     //hello azouz
     post {
         success {
+            echo 'Sending success email...'
             mail to: 'azizhajjem1920@gmail.com',
                  subject: "Pipeline Jenkins - Success - Build #${BUILD_NUMBER}",
-                 body: """Pipeline Jenkins
-
-                 Final Report: The pipeline has completed successfully. Build number: ${BUILD_NUMBER}. No action required."""
+                 body: """<html>
+                            <body>
+                                <h2 style="color: #4CAF50;">Saadaoui_Walid_5ERPBI4 Build ${BUILD_NUMBER}</h2>
+                                <div style="border: 2px solid #4CAF50; padding: 10px;">
+                                    <h3 style="background-color: #4CAF50; color: white; padding: 10px; text-align: center;">
+                                        Pipeline Status: SUCCESS
+                                    </h3>
+                                    <p>Check the <a href="${BUILD_URL}console">console output</a> for more details.</p>
+                                </div>
+                            </body>
+                          </html>""",
+                 mimeType: 'text/html'
         }
         failure {
+            echo 'Sending failure email...'
             mail to: 'azizhajjem1920@gmail.com',
                  subject: "Pipeline Jenkins - Failure - Build #${BUILD_NUMBER}",
-                 body: """Pipeline Jenkins
-
-                 Final Report: The pipeline has failed. Build number: ${BUILD_NUMBER}. Please check the logs and take necessary actions."""
+                 body: """<html>
+                            <body>
+                                <h2 style="color: #D32F2F;">Saadaoui_Walid_5ERPBI4 Build ${BUILD_NUMBER}</h2>
+                                <div style="border: 2px solid #D32F2F; padding: 10px;">
+                                    <h3 style="background-color: #D32F2F; color: white; padding: 10px; text-align: center;">
+                                        Pipeline Status: FAILURE
+                                    </h3>
+                                    <p>Check the <a href="${BUILD_URL}console">console output</a> for more details.</p>
+                                </div>
+                            </body>
+                          </html>""",
+                 mimeType: 'text/html'
         }
-        always {
-            echo 'Pipeline completed.'
-        }
-    }
+}
 }
