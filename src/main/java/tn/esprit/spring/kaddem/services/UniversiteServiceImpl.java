@@ -10,22 +10,22 @@ import tn.esprit.spring.kaddem.repositories.UniversiteRepository;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Set;
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 @Service
 public class UniversiteServiceImpl implements IUniversiteService {
 
     private static final String UNIVERSITE_NOT_FOUND = "Universite not found with id ";
 
-    
+    @Autowired
     private final UniversiteRepository universiteRepository;
 
-    
+    @Autowired
     private final DepartementRepository departementRepository;
 
-    @Autowired
-    public UniversiteServiceImpl(UniversiteRepository universiteRepository, DepartementRepository departementRepository) {
-        this.universiteRepository = universiteRepository;
-        this.departementRepository = departementRepository;
+    public UniversiteServiceImpl() {
+        // Constructor body can remain empty or be removed if no special initialization is required
     }
 
     public List<Universite> retrieveAllUniversites() {
