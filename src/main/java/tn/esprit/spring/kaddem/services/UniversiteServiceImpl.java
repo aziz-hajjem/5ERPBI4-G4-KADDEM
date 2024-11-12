@@ -16,7 +16,7 @@ public class UniversiteServiceImpl implements IUniversiteService {
 
     private static final String UNIVERSITE_NOT_FOUND = "Universite not found with id ";
 
-    
+    @Autowired
     private UniversiteRepository universiteRepository;
 
     
