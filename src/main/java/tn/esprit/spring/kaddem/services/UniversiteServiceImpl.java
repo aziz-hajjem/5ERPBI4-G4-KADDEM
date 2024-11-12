@@ -17,10 +17,10 @@ public class UniversiteServiceImpl implements IUniversiteService {
     private static final String UNIVERSITE_NOT_FOUND = "Universite not found with id ";
 
     
-    private UniversiteRepository universiteRepository;
+     UniversiteRepository universiteRepository;
 
     
-    private DepartementRepository departementRepository;
+     DepartementRepository departementRepository;
 
     public UniversiteServiceImpl() {
         // Constructor body can remain empty or be removed if no special initialization is required
