@@ -16,11 +16,11 @@ public class UniversiteServiceImpl implements IUniversiteService {
 
     private static final String UNIVERSITE_NOT_FOUND = "Universite not found with id ";
 
-    @Autowired
-    private UniversiteRepository universiteRepository;
+    
+    final UniversiteRepository universiteRepository;
 
     
-    private DepartementRepository departementRepository;
+    final DepartementRepository departementRepository;
 
     public UniversiteServiceImpl() {
         // Constructor body can remain empty or be removed if no special initialization is required
